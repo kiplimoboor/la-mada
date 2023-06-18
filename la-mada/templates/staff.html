@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title%}Staff{% endblock%}
+{% block body %}
+<div class="actions">
+    <div class="heading">
+        <h3>La Mada Staff</h3>
+    </div>
+    <button onclick="toggleEmployee()" class="new-employee">
+        <span class="material-icons">
+            person_add_alt
+        </span>
+        New Employee
+    </button>
+</div>
+<div style="display: none;" id="add-employee">
+    <h2> Register A New Employee</h2>
+    <h3>Enter Details Below</h3>
+    <div onclick="toggleEmployee()" class="cancel">
+        <span class="material-icons">
+            close
+        </span>
+    </div>
+    <form action="/register-employee" method="post">
+        <input autofocus name="first" id="first" required type="text" placeholder="First Name">
+        <input name="last" id="last" required type="text" placeholder="Last Name">
+        <input name="email" id="email" required type="email" placeholder="Email">
+        <select required name="role" id="role">
+            <option value="" disable hidden>Click to Select Role</option>
+            <option value="receptionist">Receptionist</option>
+            <option value="security">Security</option>
+            <option value="admin">Admin</option>
+        </select>
+        <button type="submit">Register</button>
+    </form>
+</div>
+<div class="workspace">
+    <div class="staff">
+        {% for employee in employees %}
+        <div class="profile-info">
+            <h2 class="name">{{ (employee.first_name).capitalize() + " "+ (employee.last_name).capitalize() }}</h2>
+            <p class="designation">{{ (employee.role).capitalize()}}</p>
+            <button class="Cancel">Dismiss</button>
+        </div>
+        {% endfor %}
+
+
+    </div>
+</div>
+{% endblock %}

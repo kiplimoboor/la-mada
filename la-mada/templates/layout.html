@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/favicon.ico" rel="icon">
+    <link href="/static/styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>La-Mada: {% block title %}{% endblock %}</title>
+</head>
+
+<body id="body">
+    <header>
+        <div class="search">
+            <span class="material-icons md-dark">search</span>
+            <form action="">
+                <input type="text" placeholder="Search for rooms here">
+            </form>
+        </div>
+        <div class="profile" onclick="logout()">
+            <div class="profile-pic">
+                <span class="material-icons md-dark">manage_accounts</span>
+            </div>
+            <div class="profile-data">
+                <span id="name">{{ (user.first_name).capitalize() + " "+ (user.last_name).capitalize()
+                    }}</span><br>
+                <span id="role">{{ (user.role).capitalize()}}</span>
+            </div>
+        </div>
+    </header>
+    <div class="logout" id="logout" style="display: none;">
+        <img src="../static/images/person.png" alt="">
+        <h2>{{ (user.first_name).capitalize() + " "+ (user.last_name).capitalize()
+            }}</h2>
+        <h3>{{ (user.role).capitalize() }}</h3>
+        <a href="/logout"><button>Logout</button></a>
+    </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div id=flashes>
+        {% for message in messages %}
+        <span class="material-icons"> check </span>
+        <span>{{ message }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <nav>
+        <div id="logo" class="logo">La-Mada</div>
+        <ul>
+            <a class="nav-item" href="/">
+                <span class="material-icons md-dark">home</span>
+                <li>Home</li>
+            </a>
+            <a class="nav-item" href="">
+                <span class="material-icons md-dark"> bed </span>
+                <li>Room</li>
+            </a>
+            <a class="nav-item" href="">
+                <span class="material-icons md-dark"> person </span>
+                <li>Guests</li>
+            </a>
+            <a class="nav-item" href="">
+                <span class="material-icons md-dark"> date_range </span>
+                <li>Booking</li>
+            </a>
+            <a class="nav-item" href="/staff">
+                <span class="material-icons md-dark"> badge </span>
+                <li>Staff</li>
+            </a>
+            <a class="nav-item" href="">
+                <span class="material-icons md-dark"> description </span>
+                <li>Reports</li>
+            </a>
+        </ul>
+    </nav>
+    {% block body%}{% endblock %}
+</body>
+<script src="../static/index.js"></script>
+
+</html>

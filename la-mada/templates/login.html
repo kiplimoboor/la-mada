@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/favicon.ico" rel="icon">
+    <link href="/static/styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>La-Mada: Login</title>
+</head>
+
+<body>
+    {% if error %}
+    <div id="flashes">
+        <span class="material-icons"> error </span>
+        <span>{{ error }}</span>
+    </div>
+    {% endif %}
+    <div class="login">
+        <img src="../static/images/hotel.jpg" alt="la-mada">
+        <h1>La-Mada Hotel</h1>
+        <h3>Please Login</h3>
+        <div class="pass-user">
+            <form action="/login" method="post">
+                <input autocomplete="off" autofocus id="email" name="email" required type="email" placeholder="Email">
+                <input id="password" id="password" name="password" type="password" required placeholder="Password">
+                <button>Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
