@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/static/favicon.ico" rel="icon">
+    <script src="../static/index.js"></script>
     <link href="/static/styles.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>La-Mada: {% block title %}{% endblock %}</title>
@@ -53,9 +54,9 @@
                 <span class="material-icons md-dark">home</span>
                 <li>Home</li>
             </a>
-            <a class="nav-item" href="">
+            <a class="nav-item" href="/rooms">
                 <span class="material-icons md-dark"> bed </span>
-                <li>Room</li>
+                <li>Rooms</li>
             </a>
             <a class="nav-item" href="">
                 <span class="material-icons md-dark"> person </span>
@@ -77,6 +78,6 @@
     </nav>
     {% block body%}{% endblock %}
 </body>
-<script src="../static/index.js"></script>
+
 
 </html>

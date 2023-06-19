@@ -1,4 +1,52 @@
 {% extends "layout.html"%}
 {% block title%}Home{% endblock %}
 {% block body %}
+
+<div class="actions">
+    <div class="heading">
+        <h3>Welcome, {{ (user.first_name).capitalize() }}</h3>
+    </div>
+    <button onclick="toggleAction()" class="action">
+        <span class="material-icons"> bed </span>
+        View Rooms
+    </button>
+</div>
+
+<div style="display: none;" id="expand-action">
+    <div onclick="toggleAction()" class="cancel">
+        <span class="material-icons">
+            close
+        </span>
+    </div>
+    <div class="rooms">
+        {% for room in rooms %}
+        <div class="room">
+            <h3>Room {{(room.room_number).upper()}}</h3>
+            <h2>{{ (room.type).capitalize()}} Size</h2>
+            <h2>{{room.rate | kes}}</h2>
+            {%if room.status == 0 %}
+            <h4 style="display: none;">Booked</h4>
+            {% else %}
+            <h4 style="display: none;">Available</h4>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<div class="workspace">
+    <div class="welcome">
+        <h1 id="trial">Hotel La Mada</h1>
+        <div class="quick-actions">
+            <div class="quick-action">
+                <span class="material-icons"> date_range </span> Make A Booking
+            </div>
+            <div class="quick-action">
+                <span class="material-icons"> bed </span> View Available Rooms
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

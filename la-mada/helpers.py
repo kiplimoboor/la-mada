@@ -10,3 +10,7 @@ def login_required(f):
         return f(*args, **kwargs)
 
     return decorated_function
+
+
+def kes(value):
+    return f"Sh.{value:,.2f}"

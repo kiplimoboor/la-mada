@@ -6,10 +6,11 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import login_required
+from helpers import login_required, kes
 
 app = Flask(__name__)
 
+app.jinja_env.filters["kes"] = kes
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -39,8 +40,8 @@ def user_details():
 @app.route("/")
 @login_required
 def index():
-
-    return render_template("index.html")
+    rows = db.execute("SELECT room_number, type, rate, status FROM rooms")
+    return render_template("index.html", rooms=rows)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -59,7 +60,6 @@ def login():
             session["user_id"] = rows[0]["id"]
             flash("Successfully Logged In")
             return redirect("/")
-
     return render_template("login.html", error=error)
 
 
@@ -67,6 +67,39 @@ def login():
 def logout():
     session.clear()
     return redirect("/login")
+
+
+@app.route("/rooms", methods=["GET", "POST"])
+@login_required
+def rooms():
+    rows = db.execute("SELECT room_number, type, rate, status FROM rooms")
+    return render_template("rooms.html", rooms=rows)
+
+
+@app.route("/register-room", methods=["GET", "POST"])
+@login_required
+def register_room():
+    if request.method == "POST":
+        type = request.form.get("room-type")
+        rate = request.form.get("rate")
+        room_number = request.form.get("room-number").lower()
+        db.execute(
+            "INSERT INTO rooms (type, rate, room_number) VALUES (?, ?, ?)",
+            type,
+            rate,
+            room_number,
+        )
+        flash("Successfuly Added Room")
+        return redirect("/rooms")
+    else:
+        return redirect("/")
+
+
+@app.route("/staff", methods=["GET", "POST"])
+@login_required
+def staff():
+    rows = db.execute("SELECT id, first_name, last_name, role FROM users")
+    return render_template("staff.html", employees=rows)
 
 
 @app.route("/register-employee", methods=["GET", "POST"])
@@ -91,11 +124,3 @@ def register_employee():
         return redirect("/staff")
     else:
         return redirect("/")
-
-
-@app.route("/staff", methods=["GET", "POST"])
-@login_required
-def staff():
-    id = session["user_id"]
-    rows = db.execute("SELECT id, first_name, last_name, role FROM users")
-    return render_template("staff.html", employees=rows)

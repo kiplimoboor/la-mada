@@ -5,17 +5,17 @@
     <div class="heading">
         <h3>La Mada Staff</h3>
     </div>
-    <button onclick="toggleEmployee()" class="new-employee">
+    <button onclick="toggleAction()" class="action">
         <span class="material-icons">
             person_add_alt
         </span>
         New Employee
     </button>
 </div>
-<div style="display: none;" id="add-employee">
+<div style="display: none;" id="expand-action">
     <h2> Register A New Employee</h2>
     <h3>Enter Details Below</h3>
-    <div onclick="toggleEmployee()" class="cancel">
+    <div onclick="toggleAction()" class="cancel">
         <span class="material-icons">
             close
         </span>
@@ -42,8 +42,6 @@
             <button class="Cancel">Dismiss</button>
         </div>
         {% endfor %}
-
-
     </div>
 </div>
 {% endblock %}
