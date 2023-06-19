@@ -1,0 +1,55 @@
+{% extends "layout.html"%}
+{% block title%}Home{% endblock %}
+{% block body %}
+
+<div class="actions">
+    <div class="heading">
+        <h3>All Rooms</h3>
+    </div>
+    <button onclick="toggleAction()" class="action">
+        <span class="material-icons"> add_business </span>
+        Add Room
+    </button>
+</div>
+
+<div style="display: none;" id="expand-action">
+    <h2> Add New Room</h2>
+    <h3>Enter Details Below</h3>
+    <div onclick="toggleAction()" class="cancel">
+        <span class="material-icons"> close </span>
+    </div>
+    <form action="/register-room" method="post">
+        <input autofocus name="room-number" id="room-number" required type="text" placeholder="Room Number">
+        <select name="room-type" id="room-type" onchange="updateRate(event)" required>
+            <option disable hidden>Click to Choose Room Type</option>
+            <option value="single">Single</option>
+            <option value="double">Double</option>
+            <option value="queen">Queen</option>
+            <option value="king">King</option>
+        </select>
+        <input name="rate" id="rate" required type="number" placeholder="Nightly Rate">
+        <button type="submit">Add Room</button>
+    </form>
+</div>
+
+<div class="workspace">
+    <div class="rooms" style="grid-template-columns: repeat(5, 1fr);">
+        {% for room in rooms %}
+        <div class="room">
+            <h3>Room {{(room.room_number).upper()}}</h3>
+            <h3>{{(room.type).capitalize()}} Size</h3>
+            <h2>Rate: {{room.rate}}</h2>
+            {%if room.status == 0 %}
+            <h4>Booked</h4>
+            {% else %}
+            <h4 style="display: none;">Available</h4>
+            <div class="book">
+                <span class="material-icons"> date_range </span>
+                <span>Book</span>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
