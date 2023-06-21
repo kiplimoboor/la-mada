@@ -1,0 +1,31 @@
+{% extends "layout.html"%}
+{% block title%}Booking History{% endblock %}
+{% block body %}
+<div class="actions">
+    <h2>All Bookings</h2>
+</div>
+<div class="workspace">
+
+    <table>
+        <tr>
+            <th>Room Number</th>
+            <th>Customer</th>
+            <th>Check-In Date</th>
+            <th>Check-Out Date</th>
+            <th>Phone Number</th>
+
+            {% for booking in bookings%}
+        <tr>
+            <td>{{(booking.room_number).upper()}}</td>
+            <td>{{(booking.customer_name).title()}}</td>
+            <td>{{booking.check_in}}</td>
+            <td>{{booking.check_out}}</td>
+            <td>{{booking.customer_phone}}</td>
+
+        </tr>
+
+        {% endfor %}
+    </table>
+
+</div>
+{% endblock %}
