@@ -1,5 +1,5 @@
 {% extends "layout.html"%}
-{% block title%}Home{% endblock %}
+{% block title%}Rooms{% endblock %}
 {% block body %}
 
 <div class="actions">
@@ -38,18 +38,63 @@
         <div class="room">
             <h3>Room {{(room.room_number).upper()}}</h3>
             <h3>{{(room.type).capitalize()}} Size</h3>
-            <h2>Rate: {{room.rate}}</h2>
+            <h2>{{room.rate | kes}}</h2>
             {%if room.status == 0 %}
-            <h4>Booked</h4>
+            <div onclick="checkOut('{{(room.room_number).upper()}}')" class="book">
+                <span class="material-icons"> light_mode </span>
+                <span>Check-Out</span>
+            </div>
+            <h4 style="display: none;">Booked</h4>
             {% else %}
             <h4 style="display: none;">Available</h4>
-            <div class="book">
-                <span class="material-icons"> date_range </span>
+            <div onclick="toggleAllocation('{{(room.room_number).upper()}}','{{room.rate}}')" class="book">
+                <span class="material-icons"> nights_stay </span>
                 <span>Book</span>
             </div>
             {% endif %}
         </div>
         {% endfor %}
     </div>
+    <div id="room-allocation" class="room-allocation" style="display: none;">
+        <div onclick="toggleAllocation()" class="cancel">
+            <span class="material-icons"> close </span>
+        </div>
+        <h2>Room Allocation Form</h2>
+        <form action="/allocate-room" method="post" id="allocate-form">
+            <div class="labels">
+                <label name="rm-rate" id="lbl-rate">Nightly Rate</label>
+                <label name="rm-number" id="lbl-number">Room Number</label>
+            </div>
+            <input hidden id="rm-number" name="rm-number" required style="display: none;" type="text">
+            <input id="rm-rate" name="rm-rate" required style="display: none;" type="text">
+            <input autofocus id="customer-name" name="customer-name" placeholder="Customer Name" required type="text">
+            <input id="customer-phone" minlength="10" maxlength="10" name="customer-phone" placeholder="Phone Number"
+                required type="tel">
+            <input id="check-in" name="check-in" type="date" required style="display: none;">
+            <input id="check-out" name="check-out" onfocus="(this.type='date')" placeholder="Check Out Date" required>
+            <button type="submit">Allocate Room</button>
+        </form>
+    </div>
+
+
+    <div id="checkout" class="room-allocation" style="display: none;">
+        <div onclick="checkOut()" class="cancel">
+            <span class="material-icons"> close </span>
+        </div>
+        <h2>Room Check Out Form</h2>
+        <form action="/check-out" method="post" id="allocate-form">
+            <div class="labels">
+                <label name="rm-number" id="checkout-number">Room Number</label>
+            </div>
+            <span style="font-style: italic; margin: 12px 0;">Ensure the customer has handed over the
+                key</span>
+            <span style="font-style: italic; margin: 12px 0;">Make sure to confirm the check out date below</span>
+            <input id="check-out-rm-number" name="rm-number" required style="display: none;" type="text">
+            <input id="check-out-date" name="check-out" type="date" required>
+            <button type="submit">Check Out</button>
+        </form>
+    </div>
+
+
 </div>
 {% endblock %}

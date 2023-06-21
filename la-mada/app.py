@@ -83,6 +83,11 @@ def register_room():
         type = request.form.get("room-type")
         rate = request.form.get("rate")
         room_number = request.form.get("room-number").lower()
+        rows = db.execute("SELECT room_number FROM rooms")
+        for row in rows:
+            if row["room_number"] == room_number:
+                flash("Room Already Exists")
+                return redirect("/rooms")
         db.execute(
             "INSERT INTO rooms (type, rate, room_number) VALUES (?, ?, ?)",
             type,
@@ -124,3 +129,49 @@ def register_employee():
         return redirect("/staff")
     else:
         return redirect("/")
+
+
+@app.route("/allocate-room", methods=["GET", "POST"])
+@login_required
+def allocate_room():
+    if request.method == "POST":
+        customer_phone = request.form.get("customer-phone")
+        customer_name = request.form.get("customer-name")
+        room_number = request.form.get("rm-number").lower()
+        check_in = request.form.get("check-in")
+        check_out = request.form.get("check-out")
+        amount_paid = request.form.get("rm-rate")
+
+        db.execute(
+            "INSERT INTO bookings( customer_phone,customer_name,room_number,check_in,check_out,amount_paid) VALUES(?, ?, ?, ?, ?, ?)",
+            customer_phone,
+            customer_name,
+            room_number,
+            check_in,
+            check_out,
+            amount_paid,
+        )
+
+        db.execute("UPDATE rooms SET status=0 WHERE room_number=?", room_number)
+
+        return redirect("/rooms")
+    else:
+        return redirect("/")
+
+
+@app.route("/check-out", methods=["GET", "POST"])
+@login_required
+def check_out():
+    if request.method == "POST":
+        room_number = request.form.get("rm-number").lower()
+        db.execute("UPDATE rooms SET status=1 where room_number =?", room_number)
+        return redirect("/rooms")
+    return
+
+
+@app.route("/history")
+@login_required
+def booking_history():
+    rows = db.execute("SELECT * FROM bookings")
+    rows.reverse()
+    return render_template("history.html", bookings=rows)

@@ -44,6 +44,21 @@ ul {
     color: rgba(0, 0, 0, 0.54);
 }
 
+.cancel {
+    display: flex;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.cancel:hover {
+    background-color: #FF0000;
+    color: #FFFFFF;
+}
+
 #flashes {
     display: flex;
     position: absolute;
@@ -149,6 +164,16 @@ form {
 
     input:focus {
         border: 2px solid #088C2D;
+    }
+
+    .labels {
+        display: flex;
+    }
+
+    label {
+        font-weight: bold;
+        font-size: 24px;
+        padding: 24px;
     }
 
     select {
@@ -384,21 +409,6 @@ nav {
         position: sticky;
     }
 
-    .cancel {
-        display: flex;
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        border-radius: 50%;
-        cursor: pointer;
-        padding: 5px;
-    }
-
-    .cancel:hover {
-        background-color: #FF0000;
-        color: #FFFFFF;
-    }
-
     .material-icons {
         padding: 0;
     }
@@ -433,6 +443,20 @@ nav {
         cursor: pointer;
     }
 
+    .room-allocation {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        inset: 10px 25vw 15vh 25vw;
+        text-align: center;
+        background-color: #ECF3F3;
+        border-radius: 20px;
+
+        .material-icons {
+            padding: 0;
+        }
+    }
+
     .staff {
         display: grid;
         gap: 15px;
@@ -463,49 +487,56 @@ nav {
         }
     }
 
+
+
     table {
-        width: 100%;
+        width: 97%;
         border-collapse: collapse;
-        text-align: center;
+        border-left: 3px solid #ECF3F3;
+        border-right: 3px solid #ECF3F3;
         overflow: hidden;
+        margin-left: 30px;
+
 
         th {
+            text-align: left;
             color: #5F6368;
-            padding: 10px;
+            padding: 10px 0 10px 30px;
             background-color: #ECF3F3;
         }
 
-        tr:nth-child(even) {
+        tr:nth-child(odd) {
             background-color: #ECF3F3;
+        }
+
+        tr:hover,
+        tr:nth-child(odd):hover {
+            background-color: #5F6368;
+            color: #ECF3F3;
         }
 
         td {
+
             margin-bottom: 5px;
-            padding: 5px 0;
-        }
-
-        td:last-child {
-            width: 150px;
-            text-align: center;
-
-
-
-            input {
-                background-color: #C2E7FF;
-                border-radius: 3px;
-                border: none;
-                padding: 2px 5px;
-                font-size: 16px;
-
-                cursor: pointer;
-            }
-
-            input:hover {
-                background-color: red;
-                color: #FFFFFF;
-            }
+            padding: 5px 0 5px 30px;
         }
 
 
+        input {
+            background-color: #C2E7FF;
+            border-radius: 3px;
+            border: none;
+            padding: 2px 5px;
+            font-size: 16px;
+
+            cursor: pointer;
+        }
+
+        input:hover {
+            background-color: red;
+            color: #FFFFFF;
+        }
     }
+
+
 }

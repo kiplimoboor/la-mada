@@ -36,6 +36,21 @@ ul {
   color: rgba(0, 0, 0, 0.54);
 }
 
+.cancel {
+  display: flex;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.cancel:hover {
+  background-color: #FF0000;
+  color: #FFFFFF;
+}
+
 #flashes {
   display: flex;
   position: absolute;
@@ -117,6 +132,14 @@ form input {
 }
 form input:focus {
   border: 2px solid #088C2D;
+}
+form .labels {
+  display: flex;
+}
+form label {
+  font-weight: bold;
+  font-size: 24px;
+  padding: 24px;
 }
 form select {
   display: flex;
@@ -325,19 +348,6 @@ nav .nav-item {
   top: 18px;
   position: sticky;
 }
-#expand-action .cancel {
-  display: flex;
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  border-radius: 50%;
-  cursor: pointer;
-  padding: 5px;
-}
-#expand-action .cancel:hover {
-  background-color: #FF0000;
-  color: #FFFFFF;
-}
 #expand-action .material-icons {
   padding: 0;
 }
@@ -368,6 +378,18 @@ nav .nav-item {
   border-radius: 10px;
   cursor: pointer;
 }
+.workspace .room-allocation {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  inset: 10px 25vw 15vh 25vw;
+  text-align: center;
+  background-color: #ECF3F3;
+  border-radius: 20px;
+}
+.workspace .room-allocation .material-icons {
+  padding: 0;
+}
 .workspace .staff {
   display: grid;
   gap: 15px;
@@ -395,28 +417,32 @@ nav .nav-item {
   color: #FFFFFF;
 }
 .workspace table {
-  width: 100%;
+  width: 97%;
   border-collapse: collapse;
-  text-align: center;
+  border-left: 3px solid #ECF3F3;
+  border-right: 3px solid #ECF3F3;
   overflow: hidden;
+  margin-left: 30px;
 }
 .workspace table th {
+  text-align: left;
   color: #5F6368;
-  padding: 10px;
+  padding: 10px 0 10px 30px;
   background-color: #ECF3F3;
 }
-.workspace table tr:nth-child(even) {
+.workspace table tr:nth-child(odd) {
   background-color: #ECF3F3;
+}
+.workspace table tr:hover,
+.workspace table tr:nth-child(odd):hover {
+  background-color: #5F6368;
+  color: #ECF3F3;
 }
 .workspace table td {
   margin-bottom: 5px;
-  padding: 5px 0;
+  padding: 5px 0 5px 30px;
 }
-.workspace table td:last-child {
-  width: 150px;
-  text-align: center;
-}
-.workspace table td:last-child input {
+.workspace table input {
   background-color: #C2E7FF;
   border-radius: 3px;
   border: none;
@@ -424,7 +450,7 @@ nav .nav-item {
   font-size: 16px;
   cursor: pointer;
 }
-.workspace table td:last-child input:hover {
+.workspace table input:hover {
   background-color: red;
   color: #FFFFFF;
 }/*# sourceMappingURL=styles.css.map */

@@ -1,3 +1,5 @@
+date = new Date();
+
 document.addEventListener('DOMContentLoaded', function () {
     const rooms = document.querySelectorAll('.room');
     rooms.forEach(room => {
@@ -10,7 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
         y.style.backgroundColor = 'red';
     }
 });
-//Toggle Add Employee
+
+//Togglers
 function toggleAction() {
     var x = document.getElementById("expand-action");
 
@@ -19,10 +22,48 @@ function toggleAction() {
     } else {
         x.style.display = "none";
     }
-
 }
 
-//Toggle Logout Pane
+
+function toggleAllocation(roomNumber, roomRate) {
+    var x = document.getElementById("room-allocation");
+    if (x.style.display === "none") {
+        x.style.display = "flex";
+
+        const today = date.toISOString().split('T')[0];
+        var tomorrow = date;
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        var tomorrow = tomorrow.toISOString().split('T')[0];
+
+        document.getElementById('lbl-rate').innerHTML = (`Pay Ksh. ${roomRate}`);
+        document.getElementById('lbl-number').innerHTML = (`Room ${roomNumber}`);
+        document.getElementById('rm-number').value = roomNumber
+        document.getElementById('rm-rate').value = roomRate
+        document.getElementById('check-in').value = today;
+        document.getElementById('check-out').setAttribute('min', tomorrow);
+
+    } else {
+        x.style.display = "none";
+    }
+}
+
+function checkOut(roomNumber) {
+    var x = document.getElementById("checkout");
+    if (x.style.display === "none") {
+        x.style.display = "flex";
+
+        const today = date.toISOString().split('T')[0];
+
+        document.getElementById('checkout-number').innerHTML = (`Checking out from Room ${roomNumber}`);
+        document.getElementById('check-out-rm-number').value = roomNumber;
+        document.getElementById('check-out-date').value = today;
+        document.getElementById('check-out-date').setAttribute('min', today);
+
+    } else {
+        x.style.display = "none";
+    }
+}
+
 function logout() {
     var x = document.getElementById("logout");
     if (x.style.display === "none") {
@@ -48,3 +89,11 @@ function updateRate(e) {
     }
 }
 
+//Open Pages
+function openRooms() {
+    window.location.href = '/rooms';
+}
+
+function openBookings() {
+    window.location.href = '/history';
+}
