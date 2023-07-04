@@ -41,6 +41,9 @@ def user_details():
 @login_required
 def index():
     rows = db.execute("SELECT room_number, type, rate, status FROM rooms")
+    user = db.execute("SELECT role from users WHERE id = ?", session["user_id"])
+    if user[0]["role"] == "admin":
+        return render_template("admin.html")
     return render_template("index.html", rooms=rows)
 
 
@@ -73,7 +76,7 @@ def logout():
 @login_required
 def rooms():
     rows = db.execute("SELECT room_number, type, rate, status FROM rooms")
-    return render_template("rooms.html", rooms=rows)
+    return render_template("rooms.html", rooms=rows, page="rooms")
 
 
 @app.route("/register-room", methods=["GET", "POST"])
