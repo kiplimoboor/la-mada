@@ -40,11 +40,10 @@ def user_details():
 @app.route("/")
 @login_required
 def index():
-    rows = db.execute("SELECT room_number, type, rate, status FROM rooms")
     user = db.execute("SELECT role from users WHERE id = ?", session["user_id"])
-    if user[0]["role"] == "admin":
-        return render_template("admin.html")
-    return render_template("index.html", rooms=rows)
+    if user[0]["role"] == "receptionist":
+        return render_template("reception.html")
+    return render_template("admin.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -76,7 +75,10 @@ def logout():
 @login_required
 def rooms():
     rows = db.execute("SELECT room_number, type, rate, status FROM rooms")
-    return render_template("rooms.html", rooms=rows, page="rooms")
+    user = db.execute("SELECT role from users WHERE id = ?", session["user_id"])
+    if user[0]["role"] == "receptionist":
+        return render_template("recep-room.html", rooms=rows)
+    return render_template("rooms.html", rooms=rows)
 
 
 @app.route("/register-room", methods=["GET", "POST"])
@@ -128,10 +130,9 @@ def register_employee():
             role,
             password,
         )
-        flash("Successfuly Added New Employee")
         return redirect("/staff")
     else:
-        return redirect("/")
+        return render_template("add-staff.html")
 
 
 @app.route("/allocate-room", methods=["GET", "POST"])
@@ -140,10 +141,10 @@ def allocate_room():
     if request.method == "POST":
         customer_phone = request.form.get("customer-phone")
         customer_name = request.form.get("customer-name")
-        room_number = request.form.get("rm-number").lower()
+        room_number = request.form.get("bk-rm-number")
         check_in = request.form.get("check-in")
-        check_out = request.form.get("check-out")
-        amount_paid = request.form.get("rm-rate")
+        check_out = request.form.get("check-out-date")
+        amount_paid = request.form.get("bk-rm-rate")
 
         db.execute(
             "INSERT INTO bookings( customer_phone,customer_name,room_number,check_in,check_out,amount_paid) VALUES(?, ?, ?, ?, ?, ?)",
@@ -166,7 +167,7 @@ def allocate_room():
 @login_required
 def check_out():
     if request.method == "POST":
-        room_number = request.form.get("rm-number").lower()
+        room_number = request.form.get("check-out-rm")
         db.execute("UPDATE rooms SET status=1 where room_number =?", room_number)
         return redirect("/rooms")
     return

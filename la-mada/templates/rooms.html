@@ -11,6 +11,10 @@
       crossorigin="anonymous"
     />
     <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.css"
+    />
+    <link
       rel="shortcut icon"
       type="image/png"
       href="../static/images/icon.svg"
@@ -37,7 +41,7 @@
             class="brand-logo d-flex align-items-center justify-content-between"
           >
             <a
-              href="./index.html"
+              href="/"
               class="text-nowrap logo-img"
               style="display: flex; align-items: center"
             >
@@ -107,7 +111,11 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a class="sidebar-link" href="/staff" aria-expanded="false">
+                <a
+                  class="sidebar-link"
+                  href="/register-employee"
+                  aria-expanded="false"
+                >
                   <span>
                     <i class="ti ti-user-plus"></i>
                   </span>
@@ -219,14 +227,17 @@
                 {% for room in rooms%}
                 <div class="room col-md-4">
                   <h5 class="card-title fw-semibold mb-4 text-center">
-                    Room {{room['room_number'].upper()}}
+                    Room
+                    <span class="rm-number"
+                      >{{room['room_number'].upper()}}</span
+                    >
                   </h5>
                   <div class="card">
                     <div class="card-body">
                       <h5 class="card-title">
                         {{room['type'].capitalize()}} Size
                       </h5>
-                      <h5 class="card-title">{{room['rate'] | kes}}</h5>
+                      <h5 class="card-title rm-rate">{{room['rate'] | kes}}</h5>
                       <p class="status card-text d-none">{{room['status']}}</p>
                       <button
                         type="button"
@@ -253,9 +264,9 @@
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">
-                        Book Room
-                      </h5>
+                      <h2 class="modal-title" id="exampleModalLabel">
+                        Room Booking Form
+                      </h2>
                       <button
                         type="button"
                         class="close"
@@ -266,39 +277,90 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      <form>
+                      <form action="/allocate-room" method="post">
                         <div class="form-group">
-                          <label for="recipient-name" class="col-form-label"
-                            >Room Number:</label
+                          <h3>
+                            <label class="bk-lbl-number col-form-label"
+                              >Room Number</label
+                            >
+                          </h3>
+                          <input
+                            type="text"
+                            class="form-control d-none"
+                            id="bk-rm-number"
+                            name="bk-rm-number"
+                            required
+                          />
+                          <input
+                            type="text"
+                            class="form-control d-none"
+                            id="bk-rm-rate"
+                            name="bk-rm-rate"
+                            required
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="customer-name" class="col-form-label"
+                            >Customer Name</label
                           >
                           <input
                             type="text"
                             class="form-control"
-                            id="recipient-name"
+                            id="customer-name"
+                            name="customer-name"
+                            required
                           />
                         </div>
                         <div class="form-group">
-                          <label for="message-text" class="col-form-label"
-                            >Message:</label
+                          <label for="customer-phone" class="col-form-label"
+                            >Phone Number &nbsp &nbsp</label
                           >
-                          <textarea
+                          <input
+                            type="tel"
+                            class="form-control phone"
+                            id="customer-phone"
+                            name="customer-phone"
+                            value="+254"
+                            required
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="customer-phone" class="col-form-label"
+                            >Check In Date</label
+                          >
+                          <input
+                            type="date"
                             class="form-control"
-                            id="message-text"
-                          ></textarea>
+                            id="check-in"
+                            name="check-in"
+                            required
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="customer-phone" class="col-form-label"
+                            >Check Out Date</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="check-out-date"
+                            name="check-out-date"
+                            required
+                          />
+                        </div>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                          <button type="submit" class="btn btn-primary">
+                            Book
+                          </button>
                         </div>
                       </form>
-                    </div>
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                      <button type="button" class="btn btn-primary">
-                        Send message
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -315,9 +377,9 @@
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">
-                        Check Out
-                      </h5>
+                      <h2 class="modal-title" id="exampleModalLabel">
+                        Check Out Prompt
+                      </h2>
                       <button
                         type="button"
                         class="close"
@@ -328,39 +390,36 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      <form>
+                      <form action="/check-out" method="post">
                         <div class="form-group">
-                          <label for="recipient-name" class="col-form-label"
-                            >Recipient:</label
-                          >
+                          <h4>
+                            <label
+                              for="recipient-name"
+                              class="col-form-label"
+                              id="check-rm"
+                              >Room</label
+                            >
+                          </h4>
                           <input
+                            name="check-out-rm"
+                            id="check-out-rm"
                             type="text"
-                            class="form-control"
-                            id="recipient-name"
+                            class="d-none"
                           />
                         </div>
-                        <div class="form-group">
-                          <label for="message-text" class="col-form-label"
-                            >Message:</label
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
                           >
-                          <textarea
-                            class="form-control"
-                            id="message-text"
-                          ></textarea>
+                            Close
+                          </button>
+                          <button type="submit" class="btn btn-primary">
+                            Check Out
+                          </button>
                         </div>
                       </form>
-                    </div>
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                      <button type="button" class="btn btn-primary">
-                        Send message
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -375,7 +434,6 @@
     <script src="../static/js/sidebarmenu.js"></script>
     <script src="../static/js/app.min.js"></script>
     <script src="../static/libs/simplebar/dist/simplebar.js"></script>
-    <script src="../static/js/index.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -391,5 +449,7 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+    <script src="../static/js/index.js"></script>
   </body>
 </html>

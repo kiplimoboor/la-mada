@@ -90,38 +90,7 @@
                   <span class="hide-menu">Rooms</span>
                 </a>
               </li>
-              <li class="sidebar-item">
-                <a
-                  class="sidebar-link"
-                  href="./authentication-register.html"
-                  aria-expanded="false"
-                >
-                  <span>
-                    <i class="ti ti-file"></i>
-                  </span>
-                  <span class="hide-menu">Reports</span>
-                </a>
-              </li>
-              <li class="sidebar-item">
-                <a class="sidebar-link" href="/staff" aria-expanded="false">
-                  <span>
-                    <i class="ti ti-user"></i>
-                  </span>
-                  <span class="hide-menu">Staff</span>
-                </a>
-              </li>
-              <li class="sidebar-item">
-                <a
-                  class="sidebar-link"
-                  href="/register-employee"
-                  aria-expanded="false"
-                >
-                  <span>
-                    <i class="ti ti-user-plus"></i>
-                  </span>
-                  <span class="hide-menu">Add Staff</span>
-                </a>
-              </li>
+
               <li class="nav-small-cap">
                 <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                 <span class="hide-menu">AUTH</span>
@@ -223,28 +192,207 @@
         <div class="container-fluid">
           <div class="card">
             <div class="card-body">
+              <h2 class="mb-4 text-center fw-semibold">All Rooms</h2>
               <div class="row">
-                {% for employee in employees%}
+                {% for room in rooms%}
                 <div class="room col-md-4">
-                  <h5 class="card-title fw-semibold mb-4 text-center">
-                    {{employee['role'].capitalize()}}
-                  </h5>
                   <div class="card">
-                    <div class="card-body text-center">
-                      <img
-                        src="../static/images/user.jpg"
-                        alt=""
-                        height="50"
-                        class="rounded-circle"
-                      />
-                      <h5 class="card-title mt-3">
-                        {{(employee['first_name'] +" "+
-                        employee['last_name']).title()}}
+                    <div class="card-body">
+                      <h5 class="card-title fw-semibold mb-4">
+                        Room
+                        <span class="rm-number"
+                          >{{room['room_number'].upper()}}</span
+                        >
                       </h5>
+                      <h5 class="card-title">
+                        {{room['type'].capitalize()}} Size
+                      </h5>
+                      <h5 class="card-title rm-rate">{{room['rate'] | kes}}</h5>
+                      <p class="status card-text d-none">{{room['status']}}</p>
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#bookRoom"
+                      >
+                        Book Room
+                      </button>
                     </div>
                   </div>
                 </div>
                 {%endfor%}
+              </div>
+
+              <div
+                class="modal fade"
+                id="bookRoom"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h2 class="modal-title" id="exampleModalLabel">
+                        Room Booking Form
+                      </h2>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="/allocate-room" method="post">
+                        <div class="form-group">
+                          <h3>
+                            <label class="bk-lbl-number col-form-label"
+                              >Room Number</label
+                            >
+                          </h3>
+                          <input
+                            type="text"
+                            class="form-control d-none"
+                            id="bk-rm-number"
+                            name="bk-rm-number"
+                            required
+                          />
+                          <input
+                            type="text"
+                            class="form-control d-none"
+                            id="bk-rm-rate"
+                            name="bk-rm-rate"
+                            required
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="customer-name" class="col-form-label"
+                            >Customer Name</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="customer-name"
+                            name="customer-name"
+                            required
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="customer-phone" class="col-form-label"
+                            >Phone Number &nbsp &nbsp</label
+                          >
+                          <input
+                            type="tel"
+                            class="form-control phone"
+                            id="customer-phone"
+                            name="customer-phone"
+                            value="+254"
+                            required
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="customer-phone" class="col-form-label"
+                            >Check In Date</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="check-in"
+                            name="check-in"
+                            required
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="customer-phone" class="col-form-label"
+                            >Check Out Date</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="check-out-date"
+                            name="check-out-date"
+                            required
+                          />
+                        </div>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                          <button type="submit" class="btn btn-primary">
+                            Book
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="modal fade"
+                id="checkOutRoom"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h2 class="modal-title" id="exampleModalLabel">
+                        Check Out Prompt
+                      </h2>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="/check-out" method="post">
+                        <div class="form-group">
+                          <h4>
+                            <label
+                              for="recipient-name"
+                              class="col-form-label"
+                              id="check-rm"
+                              >Room</label
+                            >
+                          </h4>
+                          <input
+                            name="check-out-rm"
+                            id="check-out-rm"
+                            type="text"
+                            class="d-none"
+                          />
+                        </div>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                          <button type="submit" class="btn btn-primary">
+                            Check Out
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -271,5 +419,7 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+    <script src="../static/js/index.js"></script>
   </body>
 </html>
