@@ -204,7 +204,7 @@
                           >{{room['room_number'].upper()}}</span
                         >
                       </h5>
-                      <h5 class="card-title">
+                      <h5 class="card-title rm-type">
                         {{room['type'].capitalize()}} Size
                       </h5>
                       <h5 class="card-title rm-rate">{{room['rate'] | kes}}</h5>
@@ -266,6 +266,13 @@
                             class="form-control d-none"
                             id="bk-rm-rate"
                             name="bk-rm-rate"
+                            required
+                          />
+                          <input
+                            type="text"
+                            class="form-control d-none"
+                            id="bk-rm-type"
+                            name="bk-rm-type"
                             required
                           />
                         </div>

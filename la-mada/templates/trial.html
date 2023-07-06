@@ -1,1 +1,3 @@
-
+const originalContent = document.body.innerHTML; const printArea =
+document.querySelectorAll("#receipt").innerHTML; document.body.innerHTML =
+printArea; window.print(); document.body.innerHTML = originalContent;

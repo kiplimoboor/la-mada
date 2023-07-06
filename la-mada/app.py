@@ -1,6 +1,7 @@
 import os
 
 from cs50 import SQL
+from datetime import datetime
 from flask import Flask, current_app, flash, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
@@ -41,9 +42,10 @@ def user_details():
 @login_required
 def index():
     user = db.execute("SELECT role from users WHERE id = ?", session["user_id"])
+    bookings = db.execute("SELECT * FROM bookings ORDER BY id DESC LIMIT 5")
     if user[0]["role"] == "receptionist":
-        return render_template("reception.html")
-    return render_template("admin.html")
+        return render_template("reception.html", bookings=bookings)
+    return render_template("admin.html", bookings=bookings)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -108,7 +110,9 @@ def register_room():
 @app.route("/staff", methods=["GET", "POST"])
 @login_required
 def staff():
-    rows = db.execute("SELECT id, first_name, last_name, role FROM users")
+    rows = db.execute(
+        "SELECT id, first_name, last_name, email, role FROM users ORDER BY role"
+    )
     return render_template("staff.html", employees=rows)
 
 
@@ -135,6 +139,32 @@ def register_employee():
         return render_template("add-staff.html")
 
 
+@app.route("/update-employee", methods=["GET", "POST"])
+@login_required
+def update_employee():
+    if request.method == "POST":
+        id = request.form.get("employee-id")
+        first_name = request.form.get("first-name").lower()
+        last_name = request.form.get("second-name").lower()
+        role = request.form.get("role").lower()
+        email = request.form.get("email")
+        password = (first_name + last_name).lower()
+        password = generate_password_hash(password)
+
+        db.execute(
+            "UPDATE users SET email=?, first_name=?, last_name=?, role=?, password=? WHERE id=?",
+            email,
+            first_name,
+            last_name,
+            role,
+            password,
+            id,
+        )
+        return redirect("/staff")
+    else:
+        return render_template("staff.html")
+
+
 @app.route("/allocate-room", methods=["GET", "POST"])
 @login_required
 def allocate_room():
@@ -142,23 +172,35 @@ def allocate_room():
         customer_phone = request.form.get("customer-phone")
         customer_name = request.form.get("customer-name")
         room_number = request.form.get("bk-rm-number")
+        room_type = request.form.get("bk-rm-type")
         check_in = request.form.get("check-in")
         check_out = request.form.get("check-out-date")
         amount_paid = request.form.get("bk-rm-rate")
 
         db.execute(
-            "INSERT INTO bookings( customer_phone,customer_name,room_number,check_in,check_out,amount_paid) VALUES(?, ?, ?, ?, ?, ?)",
+            "INSERT INTO bookings( customer_phone,customer_name,room_number,room_type, check_in,check_out,amount_paid) VALUES(?, ?,?, ?, ?, ?, ?)",
             customer_phone,
             customer_name,
             room_number,
+            room_type,
             check_in,
             check_out,
             amount_paid,
         )
 
         db.execute("UPDATE rooms SET status=0 WHERE room_number=?", room_number)
+        message = {
+            "message": "Thank you for booking with La Mada",
+            "name": customer_name,
+            "room": room_number.upper(),
+            "time": datetime.now().strftime("%H:%M"),
+            "date": datetime.now().strftime("%b,%d,%Y"),
+            "check-in": check_in,
+            "check-out": check_out,
+            "amount": amount_paid,
+        }
 
-        return redirect("/rooms")
+        return render_template("receipt.html", message=message)
     else:
         return redirect("/")
 

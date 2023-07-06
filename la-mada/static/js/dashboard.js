@@ -211,3 +211,21 @@ $(function () {
   };
   new ApexCharts(document.querySelector("#earning"), earning).render();
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const types = document.querySelectorAll("#room-type");
+
+  types.forEach((type) => {
+    typeContent = type.textContent.toLowerCase();
+    if (typeContent === "queen") {
+      type.classList.remove("bg-primary");
+      type.classList.add("bg-success");
+    } else if (typeContent === "double") {
+      type.classList.remove("bg-primary");
+      type.classList.add("bg-secondary");
+    } else if (typeContent === "single") {
+      type.classList.remove("bg-primary");
+      type.classList.add("bg-warning");
+    }
+  });
+});
