@@ -80,7 +80,7 @@
               </li>
               <li class="nav-small-cap">
                 <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                <span class="hide-menu">ACTIONS</span>
+                <span class="hide-menu">GENERAL</span>
               </li>
               <li class="sidebar-item">
                 <a class="sidebar-link" href="/rooms" aria-expanded="false">
@@ -110,6 +110,10 @@
                   <span class="hide-menu">Staff</span>
                 </a>
               </li>
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">ACTIONS</span>
+              </li>
               <li class="sidebar-item">
                 <a
                   class="sidebar-link"
@@ -120,6 +124,18 @@
                     <i class="ti ti-user-plus"></i>
                   </span>
                   <span class="hide-menu">Add Staff</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/register-room"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-user-plus"></i>
+                  </span>
+                  <span class="hide-menu">Add Rooms</span>
                 </a>
               </li>
               <li class="nav-small-cap">
@@ -223,18 +239,19 @@
         <div class="container-fluid">
           <div class="card">
             <div class="card-body">
+              <h2 class="mb-4 text-center fw-semibold">All Rooms</h2>
               <div class="row">
                 {% for room in rooms%}
                 <div class="room col-md-4">
-                  <h5 class="card-title fw-semibold mb-4 text-center">
-                    Room
-                    <span class="rm-number"
-                      >{{room['room_number'].upper()}}</span
-                    >
-                  </h5>
                   <div class="card">
                     <div class="card-body">
-                      <h5 class="card-title">
+                      <h5 class="card-title fw-semibold mb-4">
+                        Room
+                        <span class="rm-number"
+                          >{{room['room_number'].upper()}}</span
+                        >
+                      </h5>
+                      <h5 class="card-title rm-type">
                         {{room['type'].capitalize()}} Size
                       </h5>
                       <h5 class="card-title rm-rate">{{room['rate'] | kes}}</h5>
@@ -296,6 +313,13 @@
                             class="form-control d-none"
                             id="bk-rm-rate"
                             name="bk-rm-rate"
+                            required
+                          />
+                          <input
+                            type="text"
+                            class="form-control d-none"
+                            id="bk-rm-type"
+                            name="bk-rm-type"
                             required
                           />
                         </div>

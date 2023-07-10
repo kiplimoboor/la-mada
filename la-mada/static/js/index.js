@@ -78,6 +78,21 @@ employees.forEach((employee) => {
   };
 });
 
+//Add Room Rates
+function updateRate(e) {
+  room = e.target.value;
+  rate = document.getElementById("add-rm-rate");
+  if (room === "single") {
+    rate.value = 1000;
+  } else if (room === "double") {
+    rate.value = "1500";
+  } else if (room === "queen") {
+    rate.value = "3000";
+  } else if (room === "king") {
+    rate.value = "5000";
+  }
+}
+
 //Print Receipt
 const printer = document.querySelector("#receiptPrint");
 printer.onclick = () => {

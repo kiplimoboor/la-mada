@@ -4,6 +4,7 @@ from cs50 import SQL
 from datetime import datetime
 from flask import Flask, current_app, flash, redirect, render_template, request, session
 from flask_session import Session
+import json
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -43,9 +44,17 @@ def user_details():
 def index():
     user = db.execute("SELECT role from users WHERE id = ?", session["user_id"])
     bookings = db.execute("SELECT * FROM bookings ORDER BY id DESC LIMIT 5")
+    amounts = json.dumps(bookings)
+    rooms = db.execute("SELECT * FROM ROOMS")
+    status = list(map(lambda room: room["status"], rooms))
+    rooms = [status.count(0), status.count(1)]
     if user[0]["role"] == "receptionist":
-        return render_template("reception.html", bookings=bookings)
-    return render_template("admin.html", bookings=bookings)
+        return render_template(
+            "reception.html", bookings=bookings, rooms=rooms, amounts=amounts
+        )
+    return render_template(
+        "admin.html", bookings=bookings, rooms=rooms, amounts=amounts
+    )
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -76,7 +85,7 @@ def logout():
 @app.route("/rooms", methods=["GET", "POST"])
 @login_required
 def rooms():
-    rows = db.execute("SELECT room_number, type, rate, status FROM rooms")
+    rows = db.execute("SELECT * FROM rooms ORDER BY rate DESC")
     user = db.execute("SELECT role from users WHERE id = ?", session["user_id"])
     if user[0]["role"] == "receptionist":
         return render_template("recep-room.html", rooms=rows)
@@ -90,7 +99,7 @@ def register_room():
         type = request.form.get("room-type")
         rate = request.form.get("rate")
         room_number = request.form.get("room-number").lower()
-        rows = db.execute("SELECT room_number FROM rooms")
+        rows = db.execute("SELECT room_number FROM rooms ")
         for row in rows:
             if row["room_number"] == room_number:
                 flash("Room Already Exists")
@@ -104,7 +113,7 @@ def register_room():
         flash("Successfuly Added Room")
         return redirect("/rooms")
     else:
-        return redirect("/")
+        return render_template("add-room.html")
 
 
 @app.route("/staff", methods=["GET", "POST"])

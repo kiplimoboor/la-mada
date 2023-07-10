@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>La-Mada</title>
+    <title>La-Mada: New Room</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -224,7 +224,7 @@
                         <p class="mb-0 fs-3">My Task</p>
                       </a>
                       <a
-                        href="/logout"
+                        href="/login"
                         class="btn btn-outline-primary mx-3 mt-2 d-block"
                         >Logout</a
                       >
@@ -237,139 +237,59 @@
         </header>
         <!--  Header End -->
         <div class="container-fluid">
-          <div class="card">
-            <div class="card-body">
-              <div class="row">
-                {% for employee in employees%}
-                <div class="employee col-md-4">
-                  <h5 class="d-none employee-id">{{employee['id']}}</h5>
-
-                  <div class="card">
-                    <div class="card-body text-center">
-                      <h5 class="card-title fw-semibold mb-4 role">
-                        {{employee['role'].capitalize()}}
-                      </h5>
-                      <img
-                        src="../static/images/user.jpg"
-                        alt=""
-                        height="50"
-                        class="rounded-circle"
-                      />
-                      <h5 class="card-title mt-3 mb-3 name">
-                        {{(employee['first_name'] +" "+
-                        employee['last_name']).title()}}
-                      </h5>
-                      <h5 class="card-title mt-3 mb-3 email">
-                        {{employee['email']}}
-                      </h5>
-                      <button
-                        type="button"
-                        class="btn btn-primary"
-                        data-toggle="modal"
-                        data-target="#updateEmployee"
-                      >
-                        Manage
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                {%endfor%}
-              </div>
-              <div
-                class="modal fade"
-                id="updateEmployee"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h2 class="modal-title">Employee Management</h2>
-                      <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <form action="/update-employee" method="post">
+          <div class="container-fluid">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title fw-semibold mb-4">Add Room</h5>
+                <div class="card">
+                  <div class="card-body">
+                    <form
+                      action="/register-room"
+                      method="post"
+                      autocomplete="off"
+                    >
+                      <div class="mb-3">
+                        <label class="form-label">Room Number</label>
                         <input
+                          autocomplete="off"
                           type="text"
-                          id="employee-id"
-                          class="d-none"
-                          name="employee-id"
+                          class="form-control"
+                          name="room-number"
+                          required
                         />
-                        <div class="form-group">
-                          <label for="first-name" class="col-form-label"
-                            >First Name</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="first-name"
-                            name="first-name"
-                            required
-                          />
-                        </div>
-                        <div class="form-group">
-                          <label for="second-name" class="col-form-label"
-                            >Second Name</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="second-name"
-                            name="second-name"
-                            required
-                          />
-                        </div>
-                        <div class="form-group">
-                          <label for="second-name" class="col-form-label"
-                            >Email</label
-                          >
-                          <input
-                            type="email"
-                            class="form-control"
-                            id="email"
-                            name="email"
-                            required
-                          />
-                        </div>
-                        <div class="form-group">
-                          <label class="col-form-label">Role</label>
-                          <select
-                            id="role"
-                            class="form-control"
-                            required
-                            name="role"
-                          >
-                            <option value="" disable hidden>
-                              Click to Select Role
-                            </option>
-                            <option value="receptionist">Receptionist</option>
-                            <option value="security">Security</option>
-                            <option value="admin">Admin</option>
-                          </select>
-                        </div>
-                        <div class="modal-footer">
-                          <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-dismiss="modal"
-                          >
-                            Close
-                          </button>
-                          <button type="submit" class="btn btn-primary">
-                            Update Details
-                          </button>
-                        </div>
-                      </form>
-                    </div>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Choose Room Type</label>
+                        <select
+                          class="form-control"
+                          required
+                          name="room-type"
+                          onchange="updateRate(event)"
+                        >
+                          <option value="" disable hidden>
+                            Click to Select Room
+                          </option>
+                          <option value="king">King</option>
+                          <option value="queen">Queen</option>
+                          <option value="double">Double</option>
+                          <option value="single">Single</option>
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Room Rate</label>
+                        <input
+                          id="add-rm-rate"
+                          autocomplete="off"
+                          type="number"
+                          class="form-control"
+                          name="rate"
+                          required
+                        />
+                      </div>
+                      <button type="submit" class="btn btn-primary">
+                        Add Room
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -383,21 +303,6 @@
     <script src="../static/js/sidebarmenu.js"></script>
     <script src="../static/js/app.min.js"></script>
     <script src="../static/libs/simplebar/dist/simplebar.js"></script>
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
     <script src="../static/js/index.js"></script>
   </body>
 </html>
