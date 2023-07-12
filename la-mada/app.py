@@ -68,10 +68,9 @@ def login():
         if len(rows) != 1 or not check_password_hash(
             rows[0]["password"], request.form.get("password")
         ):
-            error = "Invalid Username or Password"
+            error = "Invalid Username or Password. Please try again."
         else:
             session["user_id"] = rows[0]["id"]
-            flash("Successfully Logged In")
             return redirect("/")
     return render_template("login.html", error=error)
 
@@ -102,7 +101,7 @@ def register_room():
         rows = db.execute("SELECT room_number FROM rooms ")
         for row in rows:
             if row["room_number"] == room_number:
-                flash("Room Already Exists")
+                flash(f"Room {room_number.upper()} Already Exists")
                 return redirect("/rooms")
         db.execute(
             "INSERT INTO rooms (type, rate, room_number) VALUES (?, ?, ?)",
@@ -135,6 +134,10 @@ def register_employee():
         role = request.form.get("role").lower()
         password = (first_name + last_name).lower()
         password = generate_password_hash(password)
+
+        if db.execute("SELECT email FROM users WHERE email=?", email):
+            flash(f"User with email {email} already exists")
+            return redirect("/staff")
         db.execute(
             "INSERT INTO users (email, first_name, last_name, role, password) VALUES(?,?,?,?,?)",
             email,

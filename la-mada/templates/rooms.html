@@ -237,6 +237,23 @@
         </header>
         <!--  Header End -->
         <div class="container-fluid">
+          {% with messages = get_flashed_messages() %} {% if messages %} {% for
+          message in messages %}
+          <div
+            class="alert alert-warning alert-dismissible fade show"
+            role="alert"
+          >
+            {{ message }}
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %} {% endif %} {% endwith %}
           <div class="card">
             <div class="card-body">
               <h2 class="mb-4 text-center fw-semibold">All Rooms</h2>
@@ -308,13 +325,7 @@
                             name="bk-rm-number"
                             required
                           />
-                          <input
-                            type="text"
-                            class="form-control d-none"
-                            id="bk-rm-rate"
-                            name="bk-rm-rate"
-                            required
-                          />
+
                           <input
                             type="text"
                             class="form-control d-none"
@@ -369,9 +380,23 @@
                             class="form-control"
                             id="check-out-date"
                             name="check-out-date"
+                            onchange="updateAmount(event)"
                             required
                           />
                         </div>
+                        <div class="form-group">
+                          <label for="bk-rm-rate" class="col-form-label"
+                            >Amount to Pay</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="bk-rm-rate"
+                            name="bk-rm-rate"
+                            required
+                          />
+                        </div>
+
                         <div class="modal-footer">
                           <button
                             type="button"

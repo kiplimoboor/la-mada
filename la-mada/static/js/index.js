@@ -46,7 +46,7 @@ rooms.forEach((room) => {
 
         item.querySelector(
           ".bk-lbl-number"
-        ).innerHTML = `Book Room  ${rmNumber.toUpperCase()}  for Ksh.${rate} Nightly`;
+        ).innerHTML = `Book Room  ${rmNumber.toUpperCase()}  for Ksh.${rate} Daily`;
         item.querySelector("#check-in").setAttribute("min", today);
         item.querySelector("#check-out-date").setAttribute("min", today);
       });
@@ -93,6 +93,15 @@ function updateRate(e) {
   }
 }
 
+//Update Amount to Pay
+function updateAmount(e) {
+  checkOut = new Date(e.target.value);
+  checkIn = new Date(document.getElementById("check-in").value);
+  difference = Math.abs(checkOut - checkIn);
+  days = difference / (1000 * 3600 * 24);
+  amount = document.getElementById("bk-rm-rate").value *= days;
+}
+
 //Print Receipt
 const printer = document.querySelector("#receiptPrint");
 printer.onclick = () => {
@@ -104,5 +113,4 @@ printer.onclick = () => {
   window.print();
 
   document.body.innerHTML = originalContent;
-  location.reload();
 };

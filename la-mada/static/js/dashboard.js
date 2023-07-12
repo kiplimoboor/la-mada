@@ -112,17 +112,20 @@ $(function () {
   // =====================================
   // Breakup
   // =====================================
-  const occupied = parseInt(document.querySelector(".occupied").textContent[0]);
-  const vacant = parseInt(document.querySelector(".vacant").textContent[0]);
+  const occupied = parseInt(
+    document.querySelector(".occupied").textContent.split()[0]
+  );
+  const vacant = parseInt(
+    document.querySelector(".vacant").textContent.split()[0]
+  );
   const total = occupied + vacant;
-  console.log(total);
+  console.log(vacant);
   let percentage = document.querySelector(".percentage");
   if (vacant == 0) {
     percentage.innerHTML = "100%";
   } else {
     percentage.innerHTML = `${Math.trunc((occupied / total) * 100)} %`;
   }
-  console.log(vacant);
   var breakup = {
     color: "#adb5bd",
     series: [vacant, occupied],

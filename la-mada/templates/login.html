@@ -7,7 +7,7 @@
     <link
       rel="shortcut icon"
       type="image/png"
-      href="../static/images/logos/favicon.png"
+      href="../static/images/icon.svg"
     />
     <link rel="stylesheet" href="../static/css/styles.min.css" />
   </head>
@@ -48,6 +48,9 @@
                     </div>
                   </div>
                   <p class="text-center">Your One Stop Restaurant</p>
+                  {% if error %}
+                  <div class="alert alert-danger" role="alert">{{ error }}</div>
+                  {% endif %}
                   <form action="/login" method="post">
                     <div class="mb-3">
                       <label for="exampleInputEmail1" class="form-label"
