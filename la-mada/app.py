@@ -19,6 +19,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 db = SQL("sqlite:///la-mada.db")
+bookings = db.execute("SELECT * FROM bookings")
 
 
 @app.after_request
@@ -98,11 +99,9 @@ def register_room():
         type = request.form.get("room-type")
         rate = request.form.get("rate")
         room_number = request.form.get("room-number").lower()
-        rows = db.execute("SELECT room_number FROM rooms ")
-        for row in rows:
-            if row["room_number"] == room_number:
-                flash(f"Room {room_number.upper()} Already Exists")
-                return redirect("/rooms")
+        if db.execute("SELECT * FROM rooms WHERE room_number=?", room_number):
+            flash(f"Room {room_number.upper()} Already Exists")
+            return redirect("/rooms")
         db.execute(
             "INSERT INTO rooms (type, rate, room_number) VALUES (?, ?, ?)",
             type,
@@ -137,7 +136,7 @@ def register_employee():
 
         if db.execute("SELECT email FROM users WHERE email=?", email):
             flash(f"User with email {email} already exists")
-            return redirect("/staff")
+            return redirect("/register-employee")
         db.execute(
             "INSERT INTO users (email, first_name, last_name, role, password) VALUES(?,?,?,?,?)",
             email,
@@ -230,6 +229,50 @@ def check_out():
 @app.route("/history")
 @login_required
 def booking_history():
-    rows = db.execute("SELECT * FROM bookings")
-    rows.reverse()
-    return render_template("history.html", bookings=rows)
+    bookings.reverse()
+    return render_template("reports.html", bookings=bookings)
+
+
+@app.route("/report", methods=["GET", "POST"])
+@login_required
+def generate_report():
+    if request.method == "POST":
+        type = request.form.get("type")
+        title = request.form.get("title")
+        room = request.form.get("room")
+        start = request.form.get("from")
+        end = request.form.get("to")
+
+        if type == "bookings":
+            if room == "all":
+                bookings = db.execute(
+                    "SELECT * FROM bookings WHERE check_in >= ? AND check_out <= ?",
+                    start,
+                    end,
+                )
+            else:
+                bookings = db.execute(
+                    "SELECT * FROM bookings WHERE room_type = ? AND check_in >= ? AND check_out <= ?",
+                    room,
+                    start,
+                    end,
+                )
+
+            return render_template("bookings.html", bookings=bookings, title=title)
+        else:
+            bookings = db.execute(
+                "SELECT SUM(amount_paid) AS amount, room_type, COUNT(room_type) AS number FROM bookings WHERE check_in >= ? AND check_out <= ? GROUP BY room_type",
+                start,
+                end,
+            )
+            sum = db.execute(
+                "SELECT SUM(amount_paid) AS sum FROM bookings WHERE check_in >= ? AND check_out <= ? GROUP BY room_type",
+                start,
+                end,
+            )
+            return render_template(
+                "earnings.html", bookings=bookings, title=title, sum=sum
+            )
+
+    else:
+        return redirect("/history")

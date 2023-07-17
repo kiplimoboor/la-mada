@@ -21,5 +21,5 @@ CREATE TABLE IF NOT EXISTS 'bookings'(
     'room_type' CHAR(30) NOT NULL,
     'check_in' DATE NOT NULL,
     'check_out' DATE NOT NULL,
-    'amount_paid' INTEGER NOUT NULL
+    'amount_paid' INTEGER NOT NULL
 );

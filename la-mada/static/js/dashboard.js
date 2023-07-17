@@ -119,7 +119,6 @@ $(function () {
     document.querySelector(".vacant").textContent.split()[0]
   );
   const total = occupied + vacant;
-  console.log(vacant);
   let percentage = document.querySelector(".percentage");
   if (vacant == 0) {
     percentage.innerHTML = "100%";
@@ -253,3 +252,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+const printReport = document.querySelector("#reportPrint");
+printReport.onclick = () => {
+  const originalContent = document.body.innerHTML;
+  const printContent = document.querySelector("#report").innerHTML;
+
+  document.body.innerHTML = printContent;
+
+  window.print();
+
+  document.body.innerHTML = originalContent;
+};

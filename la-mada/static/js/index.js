@@ -114,3 +114,11 @@ printer.onclick = () => {
 
   document.body.innerHTML = originalContent;
 };
+
+// Print Report
+
+//Prevent Numbers
+const input = document.querySelector("input");
+input.addEventListener("keydown", function (event) {
+  if (/\d/g.test(event.key)) event.preventDefault();
+});

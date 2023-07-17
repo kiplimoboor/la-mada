@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>La-Mada</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="../static/images/icon.svg"
+    />
+    <link rel="stylesheet" href="../static/css/styles.min.css" />
+  </head>
+
+  <body>
+    <!--  Body Wrapper -->
+    <div
+      class="page-wrapper"
+      id="main-wrapper"
+      data-layout="vertical"
+      data-navbarbg="skin6"
+      data-sidebartype="full"
+      data-sidebar-position="fixed"
+      data-header-position="fixed"
+    >
+      <!--  Main wrapper -->
+      <header class="app-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+            <ul
+              class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
+            >
+              <li class="nav-item dropdown">
+                <button type="button" class="btn btn-primary" id="reportPrint">
+                  <i class="ti ti-printer mx-2"></i>Print Report
+                </button>
+              </li>
+              <li class="nav-item dropdown mx-3">
+                <a href="/history">
+                  <button type="button" class="btn btn-danger">
+                    <i class="ti ti-arrow-left mx-2"></i>Exit
+                  </button></a
+                >
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!--  Row 1 -->
+      <div class="row">
+        <div
+          class="d-flex justify-content-center align-items-center"
+          style="margin-top: 10vh"
+        >
+          <div class="card w-75" id="report">
+            <div class="card-body p-4">
+              <div class="text-center">
+                <div
+                  class="d-flex align-items-center justify-content-center mb-4"
+                >
+                  <img src="../static/images/icon.svg" width="36" alt="" />
+                  <span
+                    style="
+                      font-weight: 700;
+                      font-size: 24px;
+                      color: #11142d;
+                      padding-left: 10px;
+                    "
+                    >Lamada</span
+                  >
+                </div>
+              </div>
+              <h5 class="card-title fw-semibold mb-4 text-center">{{title}}</h5>
+              <div class="table-responsive">
+                <table class="table text-nowrap mb-0 align-middle">
+                  <thead class="text-dark fs-4">
+                    <tr>
+                      <th class="border-bottom-0">
+                        <h6 class="fw-semibold mb-0">Id</h6>
+                      </th>
+                      <th class="border-bottom-0">
+                        <h6 class="fw-semibold mb-0">Assigned</h6>
+                      </th>
+                      <th class="border-bottom-0">
+                        <h6 class="fw-semibold mb-0">Room</h6>
+                      </th>
+                      <th class="border-bottom-0">
+                        <h6 class="fw-semibold mb-0">Type</h6>
+                      </th>
+                      <th class="border-bottom-0">
+                        <h6 class="fw-semibold mb-0">Paid</h6>
+                      </th>
+                      <th class="border-bottom-0">
+                        <h6 class="fw-semibold mb-0">Check-In</h6>
+                      </th>
+                      <th class="border-bottom-0">
+                        <h6 class="fw-semibold mb-0">Check-Out</h6>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {%for booking in bookings%}
+                    <div class="bookings">
+                      <div class="booking-id d-none">{{booking['id']}}</div>
+                      <tr>
+                        <td class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0 booking-id">
+                            {{booking['id']}}
+                          </h6>
+                        </td>
+                        <td class="border-bottom-0">
+                          <h6 class="fw-semibold mb-1">
+                            {{booking['customer_name']}}
+                          </h6>
+                          <span class="fw-normal"
+                            >Room {{booking['room_number'].upper()}}</span
+                          >
+                        </td>
+                        <td class="border-bottom-0">
+                          <p class="mb-0 fw-normal">
+                            {{booking['room_number'].upper()}}
+                          </p>
+                        </td>
+                        <td class="border-bottom-0">
+                          <div class="d-flex align-items-center gap-2">
+                            <span class="fw-semibold mb-1"
+                              >{{booking['room_type'].capitalize()}}</span
+                            >
+                          </div>
+                        </td>
+                        <td class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0 fs-4">
+                            Sh. {{booking['amount_paid']}}
+                          </h6>
+                        </td>
+                        <td class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0 fs-4">
+                            {{booking['check_in']}}
+                          </h6>
+                        </td>
+                        <td class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0 fs-4">
+                            {{booking['check_out']}}
+                          </h6>
+                        </td>
+                      </tr>
+                    </div>
+                    {%endfor%}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../static//libs/jquery/dist/jquery.min.js"></script>
+    <script src="../static/"></script>
+    <script src="../static//js/app.min.js"></script>
+    <script src="../static//libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="../static//libs/simplebar/dist/simplebar.js"></script>
+    <script src="../static/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../static/js/sidebarmenu.js"></script>
+    <script src="../static/js/app.min.js"></script>
+    <script src="../static/libs/simplebar/dist/simplebar.js"></script>
+    <script src="../static/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../static/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/js/sidebarmenu.js"></script>
+    <script src="../static/js/app.min.js"></script>
+    <script src="../static/libs/simplebar/dist/simplebar.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+    <script src="../static//js/dashboard.js"></script>
+    <script src="../static/js/index.js"></script>
+  </body>
+</html>

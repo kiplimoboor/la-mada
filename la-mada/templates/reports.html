@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>La-Mada: New Room</title>
+    <title>La-Mada: Create Report</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -236,35 +236,35 @@
           <div class="container-fluid">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title fw-semibold mb-4">Add Room</h5>
+                <h5 class="card-title fw-semibold mb-4">
+                  Create Bookings Report
+                </h5>
                 <div class="card">
                   <div class="card-body">
-                    <form
-                      action="/register-room"
-                      method="post"
-                      autocomplete="off"
-                    >
+                    <form action="/report" method="post">
+                      <input
+                        class="d-none"
+                        type="text"
+                        name="type"
+                        value="bookings"
+                      />
                       <div class="mb-3">
-                        <label class="form-label">Room Number</label>
+                        <label class="form-label">Report Title</label>
                         <input
                           autocomplete="off"
                           type="text"
                           class="form-control"
-                          name="room-number"
+                          name="title"
                           required
                         />
                       </div>
                       <div class="mb-3">
                         <label class="form-label">Choose Room Type</label>
-                        <select
-                          class="form-control"
-                          required
-                          name="room-type"
-                          onchange="updateRate(event)"
-                        >
+                        <select class="form-control" required name="room">
                           <option value="" disable hidden>
                             Click to Select Room
                           </option>
+                          <option value="all">All Rooms</option>
                           <option value="king">King</option>
                           <option value="queen">Queen</option>
                           <option value="double">Double</option>
@@ -272,18 +272,75 @@
                         </select>
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Room Rate</label>
+                        <label class="form-label">From</label>
                         <input
-                          id="add-rm-rate"
-                          autocomplete="off"
-                          type="number"
+                          type="date"
                           class="form-control"
-                          name="rate"
+                          name="from"
+                          required
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">To</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          name="to"
                           required
                         />
                       </div>
                       <button type="submit" class="btn btn-primary">
-                        Add Room
+                        Generate Report
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title fw-semibold mb-4">
+                  Create Financial Report
+                </h5>
+                <div class="card">
+                  <div class="card-body">
+                    <form action="/report" method="post">
+                      <input
+                        class="d-none"
+                        type="text"
+                        name="type"
+                        value="all"
+                      />
+                      <div class="mb-3">
+                        <label class="form-label">Report Title</label>
+                        <input
+                          autocomplete="off"
+                          type="text"
+                          class="form-control"
+                          name="title"
+                          required
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">From</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          name="from"
+                          required
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">To</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          name="to"
+                          required
+                        />
+                      </div>
+                      <button type="submit" class="btn btn-primary">
+                        Generate Report
                       </button>
                     </form>
                   </div>
